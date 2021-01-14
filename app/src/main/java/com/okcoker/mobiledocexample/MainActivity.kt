@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
 import com.okcoker.mobiledoc_android_renderer.MobileDocRenderer
+import com.okcoker.mobiledoc_android_renderer.data.card.defaults.DefaultHTML
+import com.okcoker.mobiledoc_android_renderer.data.card.defaults.DefaultImage
 import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
@@ -14,7 +16,9 @@ class MainActivity : AppCompatActivity() {
 
         val mobiledoc = getJsonDataFromAsset(this, "audiomack.json") ?: return
         val container = findViewById<LinearLayout>(R.id.container)
-        val renderer = MobileDocRenderer(mobiledoc)
+        val customCards = listOf(DefaultHTML(), DefaultImage())
+
+        val renderer = MobileDocRenderer(mobiledoc, cards = customCards)
 
         renderer.render(this).result.forEach { v ->
             container.addView(v)

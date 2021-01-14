@@ -135,29 +135,20 @@ class MobileDocRenderer(mobiledoc: String,
             cardList.add(card)
         }
 
-        var card = cardList[index]
+        val card = cardList[index]
         val name = card.name
 
         val customCard = cards?.find { card ->
             card.name == name
         }
 
-        if (customCard != null) {
-            card = customCard
-        }
-
-
-        val cardEnvironment = CardEnvironment(name, false, { callback ->
+        val cardEnvironment = CardEnvironment(name, false, context, { callback ->
             registerRenderCallback(callback)
         }) { callback ->
             registerRenderCallback(callback)
         }
 
-        card.render?.let {
-            return it(cardEnvironment, null, card.payload)
-        }
-
-        return null
+        return customCard?.render?.invoke(cardEnvironment, null, card.payload) ?: card.render(cardEnvironment, null, card.payload)
     }
 
     private fun renderMarkersOnElement(context: Context, sectionView: View, markers: List<Marker>): View {
@@ -217,7 +208,7 @@ class MobileDocRenderer(mobiledoc: String,
                         attributes = listOf()
                     }.render(context, config, value, parentMarkups)
 
-            Log.d("MAR->renderMarkers", "$value : ${defaultMarkup?.tagName} : ${parentMarkups.map { m -> m.tagName }}")
+//            Log.d("MAR->renderMarkers", "$value : ${defaultMarkup?.tagName} : ${parentMarkups.map { m -> m.tagName }}")
 
             when (type) {
                 MarkerType.TEXT -> {
