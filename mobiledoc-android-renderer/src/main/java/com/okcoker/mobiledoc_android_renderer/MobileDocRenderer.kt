@@ -215,7 +215,7 @@ class MobileDocRenderer(mobiledoc: String,
 
                 }
                 MarkerType.ATOM -> {
-                    renderAtomSection(index, value)?.let {
+                    renderAtomSection(context, index, value)?.let {
                         Log.e("MAR->renderAtomSection", "Not implemented")
                     }
                 }
@@ -232,6 +232,13 @@ class MobileDocRenderer(mobiledoc: String,
             ssb.plus(it)
         }
 
+        // @todo I'm thinking all MarkerType.Text types should be created within a TextView.
+        // I'm not sure what `sectionView` (the HTML h1,h2,p,blockquote tags) equivalent will be
+        // if we make that change. There's basically no need for a parent View to the TextView.
+        // We should however have different sizes for the h1, h2, etc so maybe we pass this info
+        // down to the actual Markup render function to determine what font size and any other
+        // custom things that should render when these elements are supposed to be rendered.
+        // Biggest todo here is to find out how MobileDocRendererConfig will work.
         if (sectionView is TextView) {
             sectionView.text = ssb.build()
             sectionView.setLinkTextColor(context.resources.getColor(config.linkColor))
@@ -246,7 +253,7 @@ class MobileDocRenderer(mobiledoc: String,
     }
 
 
-    private fun renderAtomSection(atomIndex: Int, value: String): View? {
+    private fun renderAtomSection(context: Context, atomIndex: Int, value: String): View? {
         val atomsRoot = mobiledocObject.getJSONArray("atoms")
         val atomList = arrayListOf<AtomInterface>()
 
@@ -262,7 +269,8 @@ class MobileDocRenderer(mobiledoc: String,
         if (atom != null) {
             val env = AtomEnvironment(
                 atom.name,
-                false
+                false,
+                context
             )
 
             return atom.render?.invoke(env, null, null, value)

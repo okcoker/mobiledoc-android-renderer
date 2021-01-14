@@ -16,6 +16,9 @@ typealias CardRenderer = (env: CardEnvironment,
                                    options: Any?,
                                    payload: JSONObject) -> View?
 
+// @todo I dont really like how custom cards have to have an empty JSONObject() payload attached
+// to them When they will be passed a payload from the Card object created from the mobiledoc
+// during render time via CardRenderer
 interface CardInterface {
     val name: String
     val type: String

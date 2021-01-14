@@ -38,8 +38,6 @@ class SimpleSpanBuilder() {
         }
     }
 
-    class Tree (val span: Span?, val children: ArrayList<Tree>)
-
     private val spanSections = mutableListOf<Span>()
     private val stringBuilder = StringBuilder()
 
