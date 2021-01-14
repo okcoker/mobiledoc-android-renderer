@@ -1,0 +1,3 @@
+include ':mobiledoc-android-renderer'
+include ':app'
+rootProject.name = "MobiledocExample"
