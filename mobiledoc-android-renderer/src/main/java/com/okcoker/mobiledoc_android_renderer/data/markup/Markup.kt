@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.text.style.*
 import android.util.Log
-import com.okcoker.mobiledoc_android_renderer.MobileDocRendererConfig
+import com.okcoker.mobiledoc_android_renderer.MobiledocRendererConfig
 import com.okcoker.mobiledoc_android_renderer.utils.SimpleSpanBuilder
 import org.json.JSONArray
 
@@ -12,14 +12,14 @@ typealias MarkupAttribute = Pair<MarkupAttributeName, String>
 interface MarkupInterface {
     var tagName: MarkupTagName
     var attributes: List<MarkupAttribute>
-    fun render(context: Context, config: MobileDocRendererConfig, value: String, markups: List<MarkupInterface>): SimpleSpanBuilder.Span
+    fun render(context: Context, config: MobiledocRendererConfig, value: String, markups: List<MarkupInterface>): SimpleSpanBuilder.Span
 }
 
 internal class Markup: MarkupInterface {
     override lateinit var tagName: MarkupTagName
     override lateinit var attributes: List<MarkupAttribute>
 
-    override fun render(context: Context, config: MobileDocRendererConfig, value: String, parentMarkups: List<MarkupInterface>): SimpleSpanBuilder.Span {
+    override fun render(context: Context, config: MobiledocRendererConfig, value: String, parentMarkups: List<MarkupInterface>): SimpleSpanBuilder.Span {
         val markups = mutableListOf<MarkupInterface>(this)
         markups.addAll(parentMarkups)
 
@@ -52,7 +52,7 @@ internal class Markup: MarkupInterface {
         }
 
         @JvmStatic
-        fun buildStyledSpan(context: Context, config: MobileDocRendererConfig, value: String, markups: List<MarkupInterface>): SimpleSpanBuilder.Span {
+        fun buildStyledSpan(context: Context, config: MobiledocRendererConfig, value: String, markups: List<MarkupInterface>): SimpleSpanBuilder.Span {
             val styles = arrayListOf<CharacterStyle>()
 
             markups.forEach {

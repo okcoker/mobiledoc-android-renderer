@@ -3,7 +3,7 @@ package com.okcoker.mobiledoc_android_renderer.sections
 import android.content.Context
 import android.view.View
 import android.widget.TextView
-import com.okcoker.mobiledoc_android_renderer.MobileDocRendererConfig
+import com.okcoker.mobiledoc_android_renderer.MobiledocRendererConfig
 import com.okcoker.mobiledoc_android_renderer.data.markup.MarkupSectionTagName
 import com.okcoker.mobiledoc_android_renderer.data.markup.MarkupSectionType
 import com.okcoker.mobiledoc_android_renderer.markers.Marker
@@ -12,7 +12,7 @@ import org.json.JSONArray
 internal class MarkupSection(var markers: List<Marker>, var tagName: MarkupSectionTagName = MarkupSectionTagName.P): SectionInterface {
     override val type = MarkupSectionType.MARKUP
 
-    override fun render(context: Context?, config: MobileDocRendererConfig): View {
+    override fun render(context: Context?, config: MobiledocRendererConfig): View {
 //        return when (tagName) {
 //            MarkupSectionTagName.H3 -> {
         val textView = TextView(context)

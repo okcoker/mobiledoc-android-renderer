@@ -11,7 +11,7 @@ From your main activity, for example:
 ```kotlin
 val mobiledoc = getJsonDataFromYourAPIOrSomething()
 val container = findViewById<LinearLayout>(R.id.container)
-val renderer = MobileDocRenderer(mobiledoc)
+val renderer = MobiledocRenderer(mobiledoc)
 
 renderer.render(this).result.forEach { v ->
     container.addView(v)
@@ -23,7 +23,12 @@ renderer.render(this).result.forEach { v ->
 
 - Figure out a clean way to allow developers to style views
 - Do we need a custom MobileDocRenderer view?
-- Figure out a clean way for developers to pass their own render functions for markups, atoms, cards and custom sections. (This kind of exists as arguments after `mobiledoc` but is untested)
+
+### Much later todo (not used on our end)
+
+- Figure out render/teardown callbacks
+- Figure out atom rendering
+- Figure out list rendering
 
 
 ### Sample App

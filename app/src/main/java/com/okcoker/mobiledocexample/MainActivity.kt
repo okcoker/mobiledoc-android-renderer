@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.LinearLayout
-import com.okcoker.mobiledoc_android_renderer.MobileDocRenderer
+import com.okcoker.mobiledoc_android_renderer.MobiledocRenderer
 import com.okcoker.mobiledoc_android_renderer.data.card.defaults.DefaultHTML
 import com.okcoker.mobiledoc_android_renderer.data.card.defaults.DefaultImage
 import java.io.IOException
@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         val container = findViewById<LinearLayout>(R.id.container)
         val customCards = listOf(DefaultHTML(), DefaultImage())
 
-        val renderer = MobileDocRenderer(mobiledoc, cards = customCards)
+        val renderer = MobiledocRenderer(mobiledoc, cards = customCards)
 
         renderer.render(this).result.forEach { v ->
             container.addView(v)

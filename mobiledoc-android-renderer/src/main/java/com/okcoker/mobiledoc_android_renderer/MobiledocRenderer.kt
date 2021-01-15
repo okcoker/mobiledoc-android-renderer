@@ -29,10 +29,10 @@ import org.json.JSONObject
  * Render for mobiledoc v0.3.1
  */
 
-class MobileDocRender(val result: List<View>, val teardown: RenderCallback)
+class MobiledocRender(val result: List<View>, val teardown: RenderCallback)
 
-class MobileDocRenderer(mobiledoc: String,
-                        private val config: MobileDocRendererConfig = MobileDocRendererConfig(),
+class MobiledocRenderer(mobiledoc: String,
+                        private val config: MobiledocRendererConfig = MobiledocRendererConfig(),
                         private val atoms: List<AtomInterface>? = null,
                         private val cards: List<CardInterface>? = null,
                         private val sections: List<SectionInterface>? = null,
@@ -41,7 +41,7 @@ class MobileDocRenderer(mobiledoc: String,
     private val renderCallbacks = ArrayList<RenderCallback>()
     private val mobiledocObject = JSONObject(mobiledoc)
 
-    fun render(context: Context): MobileDocRender {
+    fun render(context: Context): MobiledocRender {
 //        val ta = context.obtainStyledAttributes(null, R.styleable.MAR)
 //
 //        val color = ta.getColor(R.styleable.MAR_mar_link_color, Color.BLUE)
@@ -56,7 +56,7 @@ class MobileDocRenderer(mobiledoc: String,
 
         val teardown = { }
 
-        return MobileDocRender(renderedSections, teardown)
+        return MobiledocRender(renderedSections, teardown)
     }
 
     private fun renderSections(context: Context): List<View> {
@@ -90,7 +90,7 @@ class MobileDocRenderer(mobiledoc: String,
     private fun renderMarkupSection(context: Context, sectionArgs: JSONArray): View {
         val section = MarkupSection.fromJSON(sectionArgs)
         val markers = section.markers
-        val customSection = sections?.find { (it as? MarkupSection)?.tagName === section.tagName }
+        val customSection = sections?.find { (it as? MarkupSection)?.tagName == section.tagName }
 
         // Since the sections consist of like h1, h2, p, etc. we may not even want to
         // allow custom section renders as to prevent the user from erroring when renderMarkersOnElement
@@ -117,7 +117,11 @@ class MobileDocRenderer(mobiledoc: String,
         val listMarkers = section.markers
         val list = section.render(context, config)
 
-        renderMarkersOnElement(context, list, listMarkers)
+        // @todo loop over list items and render the list of markers for each item
+        // @see https://github.com/bustle/mobiledoc-kit/blob/9ee86cecbcc2d8f451ba56aa2de61c38d7286f0e/MOBILEDOC.md#sections
+        listMarkers.forEach {
+            renderMarkersOnElement(context, list, it)
+        }
 
         return list
     }
@@ -238,7 +242,7 @@ class MobileDocRenderer(mobiledoc: String,
         // We should however have different sizes for the h1, h2, etc so maybe we pass this info
         // down to the actual Markup render function to determine what font size and any other
         // custom things that should render when these elements are supposed to be rendered.
-        // Biggest todo here is to find out how MobileDocRendererConfig will work.
+        // Biggest todo here is to find out how MobiledocRendererConfig will work.
         if (sectionView is TextView) {
             sectionView.text = ssb.build()
             sectionView.setLinkTextColor(context.resources.getColor(config.linkColor))
